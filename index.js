@@ -1,35 +1,64 @@
 import * as apolloserver from 'apollo-server';
 
+const produtos = [
+	{
+		id: 1,
+		nome: 'Notebook',
+		valor: 3400.99,
+	},
+	{
+		id: 2,
+		nome: 'Celular',
+		valor: 2400.0,
+	},
+];
+
+const usuarios = [
+	{
+		id: 1,
+		nome: 'Renan',
+		salario: 13500,
+		ativo: true,
+		idade: 19,
+	},
+	{
+		id: 2,
+		nome: 'Nicolas',
+		salario: 980,
+		ativo: false,
+		idade: 29,
+	},
+];
+
 const typeDefs = apolloserver.gql`
-    type Query {
+
+    type Produto {
+        id: ID
+        nome: String
+        valor: Float
+    }
+
+    type Usuario {
         idade: Int
         salario: Float
         nome: String
         ativo: Boolean
         id: ID
-        tecnologias: [String!]!
+    }
+
+    type Query {
+        usuarios: [Usuario]
+        produtos: [Produto]
     }
 `;
 
 const resolvers = {
 	Query: {
-		idade() {
-			return 19;
+		usuarios() {
+			return usuarios;
 		},
-		salario() {
-			return 7488.97;
-		},
-		nome() {
-			return 'Renan Ferreira Yassumoto';
-		},
-		ativo() {
-			return true;
-		},
-		id() {
-			return 777;
-		},
-		tecnologias() {
-			return ['GraphQL', 'Typescript', 'NestJS'];
+		produtos() {
+			return produtos;
 		},
 	},
 };
