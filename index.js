@@ -7,6 +7,7 @@ const typeDefs = apolloserver.gql`
         nome: String
         ativo: Boolean
         id: ID
+        tecnologias: [String!]!
     }
 `;
 
@@ -26,6 +27,9 @@ const resolvers = {
 		},
 		id() {
 			return 777;
+		},
+		tecnologias() {
+			return ['GraphQL', 'Typescript', 'NestJS'];
 		},
 	},
 };
