@@ -1,80 +1,60 @@
 import * as apolloserver from 'apollo-server';
 
-const produtos = [
-	{
-		id: 1,
-		nome: 'Notebook',
-		valor: 3400.99,
-	},
-	{
-		id: 2,
-		nome: 'Celular',
-		valor: 2400.0,
-	},
-];
-
-const usuarios = [
+const db = [
 	{
 		id: 1,
 		nome: 'Renan',
-		salario: 13500,
-		ativo: true,
-		idade: 19,
+		email: 'renankosmo@gmail.com',
+		telefone: '67 9999 9999',
+		perfil: 1,
 	},
 	{
 		id: 2,
 		nome: 'Nicolas',
-		salario: 980,
-		ativo: false,
-		idade: 29,
+		email: 'nicolas@gmail.com',
+		telefone: '67 8888 9999',
+		perfil: 2,
 	},
+];
+
+const perfis = [
+	{ id: 1, descricao: 'ADMIN' },
+	{ id: 2, descricao: 'NORMAL' },
 ];
 
 const typeDefs = apolloserver.gql`
 
-    type Produto {
-        id: ID
-        nome: String
-        valor: Float
-    }
-
     type Usuario {
-        idade: Int
-        salario: Float
-        nome: String
-        ativo: Boolean
-        id: ID
-    }
+		id: Int
+		nome: String
+		email: String
+		telefone: String
+		perfil: Perfil
+	}
+
+	type Perfil {
+		id: Int
+		descricao: String
+	}
 
     type Query {
-        usuarios: [Usuario]
-        produtos: [Produto]
-        usuario(id: Int, nome: String): Usuario
-        produto(id: Int, nome: String): Produto
+		usuario(id: Int): Usuario
+		perfis: [Perfil]
     }
 `;
 
 const resolvers = {
+	Usuario: {
+		perfil(usuario) {
+			return perfis.find((perfil) => perfil.id == usuario.perfil);
+		},
+	},
 	Query: {
-		usuarios() {
-			return usuarios;
-		},
 		usuario(_, args) {
-			const { id, nome } = args;
-			if (id) {
-				return usuarios.find((usuario) => usuario.id == id);
-			}
-			return usuarios.find((usuario) => usuario.nome == nome);
+			return db.find((db) => db.id == args.id);
 		},
-		produtos() {
-			return produtos;
-		},
-		produto(_, args) {
-			const { id, nome } = args;
-			if (id) {
-				return produtos.find((produto) => produto.id == id);
-			}
-			return produtos.find((produto) => produto.nome == nome);
+		perfis() {
+			return perfis;
 		},
 	},
 };
