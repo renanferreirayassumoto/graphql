@@ -25,6 +25,11 @@ const db = {
 
 const typeDefs = apolloserver.gql`
 
+	enum TipoPerfil {
+		ADMIN 
+		NORMAL
+	}
+
     type Usuario {
 		id: Int
 		nome: String
@@ -35,7 +40,7 @@ const typeDefs = apolloserver.gql`
 
 	type Perfil {
 		id: Int
-		descricao: String
+		descricao: TipoPerfil
 	}
 
     type Query {
